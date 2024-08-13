@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Background from '/image/wallpaper.jpg';
 import Ring from '/image/ring.png';
@@ -8,8 +8,6 @@ import { Link } from 'react-router-dom';
 const SongPlaylist = () => {
     const [musics, setMusics] = useState([]);
     const [playing, setPlaying] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const audioRef = useRef(null);
 
     useEffect(() => {
         const fetchMusics = async () => {
@@ -24,32 +22,12 @@ const SongPlaylist = () => {
         fetchMusics();
     }, []);
 
-    const handlePlay = (id, index) => {
+    const handlePlay = (id) => {
         setPlaying(id);
-        setCurrentIndex(index);
-        if (audioRef.current) {
-            audioRef.current.play();
-        }
     };
 
     const handlePause = () => {
         setPlaying(null);
-        if (audioRef.current) {
-            audioRef.current.pause();
-        }
-    };
-
-    const handleEnded = () => {
-        const nextIndex = currentIndex + 1;
-        if (nextIndex < musics.length) {
-            const nextMusic = musics[nextIndex];
-            setPlaying(nextMusic._id);
-            setCurrentIndex(nextIndex);
-            if (audioRef.current) {
-                audioRef.current.src = nextMusic.fileUrl;
-                audioRef.current.play();
-            }
-        }
     };
 
     return (
@@ -60,7 +38,7 @@ const SongPlaylist = () => {
             <div className='flex flex-col w-full items-center justify-center'>
                 <h1 className='font-poppins text-white lg:text-[37px] text-[28px] pt-[120px]'>MUSIC PLAYLIST</h1>
                 <div className='mt-6 space-y-10'>
-                    {musics.map((music, index) => (
+                    {musics.map(music => (
                         <div 
                             key={music._id} 
                             className='bg-white flex lg:flex-row flex-col lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'
@@ -77,12 +55,10 @@ const SongPlaylist = () => {
                                 </div>
                             </div>
                             <audio 
-                                ref={audioRef}
                                 controls 
                                 className='lg:w-[400px] w-[250px] lg:scale-[1.2] scale-[1.1] lg:mt-0 mt-8 audio-custom'
-                                onPlay={() => handlePlay(music._id, index)}
+                                onPlay={() => handlePlay(music._id)}
                                 onPause={handlePause}
-                                onEnded={handleEnded}
                             >
                                 <source src={music.fileUrl} type='audio/mp3' />
                             </audio>
