@@ -51,7 +51,7 @@ const LoginMain = () => {
 
     return (
         <div className="flex items-center justify-center w-full h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${background})` }}>
-            <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center w-[450px] h-[450px] bg-black bg-opacity-50 rounded-lg">
+            <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center w-[450px] h-[450px] bg-black bg-opacity-50 rounded-lg lg:scale-100 scale-50">
                 <h1 className="text-white text-[35px] mb-4 font-poppins">Admin</h1>
                 <p className="text-white text-sm text-center mb-9 text-[15px] w-[300px] font-poppins2">Silahkan memasukkan email dan kata sandi yang benar</p>
                 <div className="flex flex-col gap-4 mb-7 text-black">
