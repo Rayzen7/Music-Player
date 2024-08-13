@@ -12,7 +12,7 @@ const SongPlaylist = () => {
     useEffect(() => {
         const fetchMusics = async () => {
             try {
-                const response = await axios.get('https://music-player-api-liart.vercel.app/api/music/');
+                const response = await axios.get('https://music-player-api-liart.vercel.app/api/music');
                 console.log(response.data);
                 setMusics(response.data);
             } catch (error) {
