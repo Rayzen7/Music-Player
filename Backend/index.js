@@ -5,6 +5,15 @@ import router from './routes/musicRoutes.js';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import adminRouter from './routes/adminRouter.js';
+import multer from 'multer';
+
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 10 * 1024 * 1024 
+    }
+});
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
