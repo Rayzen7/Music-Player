@@ -3,6 +3,10 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 import { v4 as uuidv4 } from 'uuid';
 import { storage } from "../firebaseConfig.js";
 
+// Multer setting
+const storageConfig = multer.memoryStorage(); 
+export const uploadMusic = multer({ storage: storageConfig }).single('file');
+
 // Create
 export const createMusic = async (req, res) => {
     try {
