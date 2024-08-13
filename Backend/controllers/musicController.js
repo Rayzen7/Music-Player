@@ -1,12 +1,7 @@
 import Music from "../models/music.js";
-import multer from 'multer';
-import { storage } from "../firebaseConfig.js";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
-
-// Multer setting
-const storageConfig = multer.memoryStorage(); 
-export const uploadMusic = multer({ storage: storageConfig }).single('file');
+import { storage } from "../firebaseConfig.js";
 
 // Create
 export const createMusic = async (req, res) => {
@@ -16,6 +11,10 @@ export const createMusic = async (req, res) => {
 
         if (!file) {
             return res.status(400).json({ message: "No file uploaded" });
+        }
+
+        if (file.size > 10 * 1024 * 1024) { 
+            return res.status(400).json({ message: "File size exceeds the limit of 10MB" });
         }
 
         const uniqueFilename = `${uuidv4()}-${file.originalname}`;
