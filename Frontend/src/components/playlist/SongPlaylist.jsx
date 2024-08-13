@@ -13,7 +13,6 @@ const SongPlaylist = () => {
         const fetchMusics = async () => {
             try {
                 const response = await axios.get('https://music-player-api-liart.vercel.app/api/music');
-                console.log(response.data);
                 setMusics(response.data);
             } catch (error) {
                 console.error('Error fetching music:', error);
@@ -26,22 +25,28 @@ const SongPlaylist = () => {
     const handlePlay = (id) => {
         setPlaying(id);
     };
+
     const handlePause = () => {
         setPlaying(null);
     };
 
     return (
-        <div className='w-full min-h-[100vh] h-auto bg-cover bg-no-repeat object-cover relative text-black'
-             style={{backgroundImage: `url(${Background})`}}>
+        <div 
+            className='w-full min-h-[100vh] h-auto bg-cover bg-no-repeat object-cover relative text-black'
+            style={{ backgroundImage: `url(${Background})` }}
+        >
             <div className='flex flex-col w-full items-center justify-center'>
                 <h1 className='font-poppins text-white lg:text-[37px] text-[28px] pt-[120px]'>MUSIC PLAYLIST</h1>
                 <div className='mt-6 space-y-10'>
                     {musics.map(music => (
-                        <div key={music._id} className='bg-white flex lg:flex-row flex-col lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'>
+                        <div 
+                            key={music._id} 
+                            className='bg-white flex lg:flex-row flex-col lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'
+                        >
                             <div className='flex lg:flex-row flex-col justify-center items-center'>
                                 <img 
                                     src={Ring} 
-                                    alt="" 
+                                    alt="Album Art" 
                                     className={`h-auto lg:w-[80px] w-[120px] ${playing === music._id ? 'animate-rotate' : ''}`} 
                                 />
                                 <div className='lg:ml-7 ml-0 lg:mt-0 mt-10 lg:text-start text-center'>
@@ -55,17 +60,23 @@ const SongPlaylist = () => {
                                 onPlay={() => handlePlay(music._id)}
                                 onPause={handlePause}
                             >
-                                <source src={`https://music-player-api-liart.vercel.app/uploads/${music.fileUrl}`} type='audio/mp3' />
+                                <source src={music.fileUrl} type='audio/mp3' />
                             </audio>
                         </div>
                     ))}
                 </div>
             </div>
             <div className='mt-[90px] pb-[30px]'>
-                <Link to='/'><button className='text-white bg-blue w-[200px] h-[50px] font-poppins text-[19px] rounded-3xl mx-auto block hover:bg-white hover:text-blue hover:scale-75 hover:opacity-90 duration-300'>Logout</button></Link>
+                <Link to='/'>
+                    <button 
+                        className='text-white bg-blue w-[200px] h-[50px] font-poppins text-[19px] rounded-3xl mx-auto block hover:bg-white hover:text-blue hover:scale-75 hover:opacity-90 duration-300'
+                    >
+                        Logout
+                    </button>
+                </Link>
             </div>
         </div>
     );
-}
+};
 
 export default SongPlaylist;

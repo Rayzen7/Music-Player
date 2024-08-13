@@ -24,7 +24,7 @@ GET http://localhost:5000/api/music
 GET http://localhost:5000/api/music/download/1723393935840-jatuhcinta.mpeg
 
 ### Delete Lagu
-DELETE http://localhost:5000/api/music/66badbb49bc05648d53c7829
+DELETE http://localhost:5000/api/music/66bb3b188ed8bb344a18d81c
 
 ### Register Admin
 POST http://localhost:5000/api/admin/Adminregister
