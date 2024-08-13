@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 const SongPlaylist = () => {
     const [musics, setMusics] = useState([]);
     const [playing, setPlaying] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         const fetchMusics = async () => {
@@ -22,12 +23,22 @@ const SongPlaylist = () => {
         fetchMusics();
     }, []);
 
-    const handlePlay = (id) => {
+    const handlePlay = (id, index) => {
         setPlaying(id);
+        setCurrentIndex(index);
     };
 
     const handlePause = () => {
         setPlaying(null);
+    };
+
+    const handleEnded = () => {
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < musics.length) {
+            const nextMusic = musics[nextIndex];
+            setPlaying(nextMusic._id);
+            setCurrentIndex(nextIndex);
+        }
     };
 
     return (
@@ -38,7 +49,7 @@ const SongPlaylist = () => {
             <div className='flex flex-col w-full items-center justify-center'>
                 <h1 className='font-poppins text-white lg:text-[37px] text-[28px] pt-[120px]'>MUSIC PLAYLIST</h1>
                 <div className='mt-6 space-y-10'>
-                    {musics.map(music => (
+                    {musics.map((music, index) => (
                         <div 
                             key={music._id} 
                             className='bg-white flex lg:flex-row flex-col lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'
@@ -57,8 +68,9 @@ const SongPlaylist = () => {
                             <audio 
                                 controls 
                                 className='lg:w-[400px] w-[250px] lg:scale-[1.2] scale-[1.1] lg:mt-0 mt-8 audio-custom'
-                                onPlay={() => handlePlay(music._id)}
+                                onPlay={() => handlePlay(music._id, index)}
                                 onPause={handlePause}
+                                onEnded={handleEnded}  
                             >
                                 <source src={music.fileUrl} type='audio/mp3' />
                             </audio>
