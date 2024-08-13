@@ -73,6 +73,7 @@ export const deleteMusic = async (req, res) => {
         if (!music) {
             return res.status(404).json({ message: 'Music not found' });
         }
+        console.log(`Deleting file with filename: ${music.filename}`);
         const storageRef = ref(storage, `audio/${music.filename}`);
         await deleteObject(storageRef);
 
