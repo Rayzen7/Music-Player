@@ -1,62 +1,40 @@
 import Music from "../models/music.js";
-import path from 'path';
 import multer from 'multer';
-import fs from 'fs';
-import ffmpeg from 'fluent-ffmpeg';
-import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
-
-ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+import { storage } from "../firebaseConfig.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
 
 // Multer setting
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename(req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    },
-});
-const upload = multer({ storage });
-export const uploadMusic = upload.single('file');
+const storageConfig = multer.memoryStorage(); 
+export const uploadMusic = multer({ storage: storageConfig }).single('file');
 
 // Create
 export const createMusic = async (req, res) => {
     try {
         const { title, artist } = req.body;
-        const originalPath = path.join('uploads', req.file.filename);
-        const mp3Filename = `${Date.now()}.mp3`;
-        const mp3Path = path.join('uploads', mp3Filename);
+        const file = req.file;
 
-        ffmpeg(originalPath)
-            .toFormat('mp3')
-            .on('end', async () => {
-                fs.unlink(originalPath, (err) => {
-                    if (err) {
-                        console.error("Error deleting original file:", err);
-                        return res.status(500).json({ message: "Error deleting original file" });
-                    }
+        if (!file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
 
-                    // Simpan informasi musik ke database
-                    const music = new Music({
-                        title,
-                        artist,
-                        fileUrl: mp3Filename,
-                    });
+        const uniqueFilename = `${uuidv4()}-${file.originalname}`;
+        const storageRef = ref(storage, `audio/${uniqueFilename}`);
+        const metadata = { contentType: file.mimetype };
 
-                    music.save()
-                        .then((createdMusic) => res.status(201).json(createdMusic))
-                        .catch((error) => {
-                            console.error("Error saving music to database:", error);
-                            res.status(500).json({ message: "Error saving music to database" });
-                        });
-                });
-            })
-            .on('error', (err) => {
-                console.error("Error converting to MP3:", err);
-                res.status(500).json({ message: "Error converting to MP3" });
-            })
-            .save(mp3Path);
+        await uploadBytes(storageRef, file.buffer, metadata);
+        const downloadURL = await getDownloadURL(storageRef);
+        const music = new Music({
+            title,
+            artist,
+            fileUrl: downloadURL,
+            filename: uniqueFilename,
+        });
+
+        await music.save();
+        res.status(201).json(music);
     } catch (error) {
+        console.error("Error uploading file to Firebase Storage:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -74,11 +52,15 @@ export const getMusic = async (req, res) => {
 // Download
 export const downloadMusic = async (req, res) => {
     try {
-        const filePath = path.join(process.cwd(), 'uploads', req.params.filename);
-        console.log('Attempting to serve file at:', filePath);
-        res.sendFile(filePath);
+        const music = await Music.findById(req.params.id);
+
+        if (!music) {
+            return res.status(404).json({ message: 'Music not found' });
+        }
+
+        res.status(200).json({ url: music.fileUrl });
     } catch (error) {
-        console.error('Error serving file:', error);
+        console.error('Error in downloadMusic controller:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -92,32 +74,12 @@ export const deleteMusic = async (req, res) => {
             return res.status(404).json({ message: 'Music not found' });
         }
 
-        const filePath = path.join(process.cwd(), 'uploads', music.fileUrl);
-        console.log('Attempting to delete file at:', filePath);
-
-        fs.access(filePath, fs.constants.F_OK, (err) => {
-            if (err) {
-                console.error('File does not exist:', err);
-                return res.status(404).json({ message: 'File does not exist' });
-            }
-
-            fs.unlink(filePath, async (err) => {
-                if (err) {
-                    console.error('Error deleting file:', err);
-                    return res.status(500).json({ message: 'Failed to delete file' });
-                }
-
-                try {
-                    await Music.deleteOne({ _id: req.params.id });
-                    res.status(200).json({ message: 'Music deleted successfully' });
-                } catch (err) {
-                    console.error('Error deleting from database:', err);
-                    res.status(500).json({ message: 'Failed to delete from database' });
-                }
-            });
-        });
+        const storageRef = ref(storage, `audio/${music.filename}`);
+        await deleteObject(storageRef);
+        await Music.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: 'Music deleted successfully' });
     } catch (error) {
-        console.error('Error in deleteMusic controller:', error);
+        console.error('Error deleting music:', error);
         res.status(500).json({ message: error.message });
     }
 };

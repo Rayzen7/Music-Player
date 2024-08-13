@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/upload', uploadMusic, createMusic);
 router.get('/', getMusic);
-router.get('/download/:filename', downloadMusic);
+router.get('/download/:id', downloadMusic);
 router.delete('/:id', deleteMusic);
 
-export default router
+export default router;
