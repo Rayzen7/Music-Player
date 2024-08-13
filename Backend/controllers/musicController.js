@@ -73,10 +73,26 @@ export const deleteMusic = async (req, res) => {
         if (!music) {
             return res.status(404).json({ message: 'Music not found' });
         }
-        console.log(`Deleting file with filename: ${music.filename}`);
-        const storageRef = ref(storage, `audio/${music.filename}`);
-        await deleteObject(storageRef);
 
+        if (!music.filename) {
+            return res.status(400).json({ message: 'Filename is missing' });
+        }
+
+        console.log(`Attempting to delete file with filename: ${music.filename}`);
+
+        const storageRef = ref(storage, `audio/${music.filename}`);
+        console.log(`Firebase Storage path: ${storageRef.fullPath}`);
+
+        try {
+            await deleteObject(storageRef);
+            console.log(`File ${music.filename} deleted from Firebase Storage`);
+        } catch (firebaseError) {
+            if (firebaseError.code === 'storage/object-not-found') {
+                console.error(`File ${music.filename} not found in Firebase Storage`);
+                return res.status(404).json({ message: 'File not found in Firebase Storage' });
+            }
+            throw firebaseError; 
+        }
         await Music.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: 'Music deleted successfully' });
     } catch (error) {
