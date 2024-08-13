@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from '../views/Home'
 import Playlist from '../views/Playlist'
 import Login from '../views/Login'
-import Upload from '../components/uploadmain/upload'
+import Upload from '../components/uploadmain/UploadMain'
 
 const Router = () => {
   return (

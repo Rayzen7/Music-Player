@@ -1,5 +1,5 @@
 import React from 'react'
-import Upload from '../components/uploadmain/upload'
+import Upload from '../components/uploadmain/UploadMain'
 
 const UploadSong = () => {
   return (
