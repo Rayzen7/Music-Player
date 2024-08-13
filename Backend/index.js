@@ -12,7 +12,11 @@ const __dirname = dirname(__filename);
 
 app.use(express.json());
 app.use(cors({
-    origin: '*', 
+    origin: ["https://music-player-nu-liart.vercel.app/"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+    preflightContinue: true,
+    optionsSuccessStatus: 204 
 }));
 
 ConnectDB();
