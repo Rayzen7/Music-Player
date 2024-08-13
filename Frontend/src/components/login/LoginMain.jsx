@@ -25,7 +25,7 @@ const LoginMain = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/api/admin/Adminlogin', {
+            const response = await axios.post('https://music-player-api-liart.vercel.app/api/admin/Adminlogin', {
                 email,
                 password
             });

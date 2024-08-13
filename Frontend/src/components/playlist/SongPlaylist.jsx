@@ -12,7 +12,7 @@ const SongPlaylist = () => {
     useEffect(() => {
         const fetchMusics = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/music/');
+                const response = await axios.get('https://music-player-api-liart.vercel.app/api/music/');
                 console.log(response.data);
                 setMusics(response.data);
             } catch (error) {
@@ -55,7 +55,7 @@ const SongPlaylist = () => {
                                 onPlay={() => handlePlay(music._id)}
                                 onPause={handlePause}
                             >
-                                <source src={`http://localhost:5000/uploads/${music.fileUrl}`} type='audio/mp3' />
+                                <source src={`https://music-player-api-liart.vercel.app/uploads/${music.fileUrl}`} type='audio/mp3' />
                             </audio>
                         </div>
                     ))}

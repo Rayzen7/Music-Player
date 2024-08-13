@@ -14,7 +14,7 @@ const Upload = () => {
     useEffect(() => {
         const fetchMusics = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/music/');
+                const response = await axios.get('https://music-player-api-liart.vercel.app/api/music/');
                 console.log(response.data);
                 setMusics(response.data);
             } catch (error) {
@@ -45,7 +45,7 @@ const Upload = () => {
         formData.append('artist', artist);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/music/upload", formData, {
+            const response = await axios.post("https://music-player-api-liart.vercel.app/api/music/upload", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -62,7 +62,7 @@ const Upload = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/music/${id}`);
+            await axios.delete(`https://music-player-api-liart.vercel.app/api/music/${id}`);
             setMusics(musics.filter(music => music._id !== id));
         } catch (error) {
             console.error('Error deleting music:', error);
@@ -122,7 +122,7 @@ const Upload = () => {
                                 onPlay={() => handlePlay(music._id)}
                                 onPause={handlePause}
                             >
-                                <source src={`http://localhost:5000/uploads/${music.fileUrl}`} type='audio/mp3' />
+                                <source src={`https://music-player-api-liart.vercel.app/uploads/${music.fileUrl}`} type='audio/mp3' />
                             </audio>
                             <button 
                             onClick={() => handleDelete(music._id)}
