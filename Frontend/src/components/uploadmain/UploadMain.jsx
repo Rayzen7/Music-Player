@@ -156,16 +156,9 @@ const Upload = () => {
                 </div>
             </div>
             <div className='mt-[120px]'>
-                <Link to='/Upload'>
-                    <button 
-                        className='text-white bg-blue w-[200px] h-[50px] font-poppins text-[19px] rounded-3xl mx-auto block hover:bg-white hover:text-blue hover:scale-75 hover:opacity-90 duration-300'
-                    >
-                        Refreash
-                    </button>
-                </Link>
                 <Link to='/'>
                     <button 
-                        className='text-white bg-blue w-[200px] h-[50px] font-poppins text-[19px] rounded-3xl mx-auto block hover:bg-white mt-10 hover:text-blue hover:scale-75 hover:opacity-90 duration-300'
+                        className='text-white bg-blue w-[200px] h-[50px] font-poppins text-[19px] rounded-3xl mx-auto block hover:bg-white hover:text-blue hover:scale-75 hover:opacity-90 duration-300'
                     >
                         Logout
                     </button>
