@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Background from '/image/wallpaper.jpg';
 import Ring from '/image/ring.png';
@@ -9,6 +9,7 @@ const SongPlaylist = () => {
     const [musics, setMusics] = useState([]);
     const [playing, setPlaying] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const audioRef = useRef(null);
 
     useEffect(() => {
         const fetchMusics = async () => {
@@ -26,10 +27,16 @@ const SongPlaylist = () => {
     const handlePlay = (id, index) => {
         setPlaying(id);
         setCurrentIndex(index);
+        if (audioRef.current) {
+            audioRef.current.play();
+        }
     };
 
     const handlePause = () => {
         setPlaying(null);
+        if (audioRef.current) {
+            audioRef.current.pause();
+        }
     };
 
     const handleEnded = () => {
@@ -38,6 +45,10 @@ const SongPlaylist = () => {
             const nextMusic = musics[nextIndex];
             setPlaying(nextMusic._id);
             setCurrentIndex(nextIndex);
+            if (audioRef.current) {
+                audioRef.current.src = nextMusic.fileUrl;
+                audioRef.current.play();
+            }
         }
     };
 
@@ -66,11 +77,12 @@ const SongPlaylist = () => {
                                 </div>
                             </div>
                             <audio 
+                                ref={audioRef}
                                 controls 
                                 className='lg:w-[400px] w-[250px] lg:scale-[1.2] scale-[1.1] lg:mt-0 mt-8 audio-custom'
                                 onPlay={() => handlePlay(music._id, index)}
                                 onPause={handlePause}
-                                onEnded={handleEnded}  
+                                onEnded={handleEnded}
                             >
                                 <source src={music.fileUrl} type='audio/mp3' />
                             </audio>
