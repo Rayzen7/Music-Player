@@ -33,7 +33,14 @@ const Upload = () => {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        if (selectedFile && selectedFile.size > 10 * 1024 * 1024) { 
+            setUploadMessage('File size exceeds the limit of 10MB.');
+            setFile(null);
+        } else {
+            setFile(selectedFile);
+            setUploadMessage('');
+        }
     };
 
     const handleUpload = async (e) => {
@@ -108,13 +115,14 @@ const Upload = () => {
                     />
 
                     {file && <p className='text-center mt-2'>Selected File: {file.name}</p>}
-
+                    
                     <button 
                         type='submit' 
                         className='lg:w-[700px] w-[300px] h-[60px] bg-blue text-white duration-300 transition-all hover:bg-white hover:text-blue hover:scale-75 hover:opacity-75 text-[22px] font-poppins rounded-xl'
                     >
                         Upload
                     </button>
+
                     {uploadMessage && <p className='text-center mt-6'>{uploadMessage}</p>}
                 </form>
             </div>
