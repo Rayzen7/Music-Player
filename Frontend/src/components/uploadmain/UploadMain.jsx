@@ -120,11 +120,11 @@ const Upload = () => {
             </div>
             <div className='text-black mt-12'>
                 <h1 className='font-poppins text-black lg:text-[37px] text-[28px] pt-[20px]'>MUSIC PLAYLIST</h1>
-                <div className='mt-6 space-y-10'>
+                <div className='mt-6 space-y-10 block mx-auto'>
                     {musics.map(music => (
                         <div 
                             key={music._id} 
-                            className='bg-white flex lg:flex-row flex-col lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'
+                            className='bg-white flex lg:flex-row flex-col mx-auto lg:w-[900px] w-[300px] justify-center lg:justify-between items-center px-10 lg:py-5 py-10 rounded-3xl'
                         >
                             <div className='flex lg:flex-row flex-col justify-center items-center'>
                                 <img 
