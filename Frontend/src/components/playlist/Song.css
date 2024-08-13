@@ -1,0 +1,8 @@
+.audio-custom::-webkit-media-controls-panel {
+    background-color: #ffffff;
+}
+
+.audio-custom::-webkit-media-controls-play-button,
+.audio-custom::-webkit-media-controls-volume-slider {
+    background-color: #ffffff;
+}

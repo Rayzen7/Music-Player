@@ -1,0 +1,46 @@
+### Upload Lagu
+POST http://localhost:5000/api/music/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="jatuhcinta.mp3"
+Content-Type: audio/mp3
+
+< D:/Proyek Setio/Codingan/Music-Player/Backend/song/jatuhcinta.mp3
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="title"
+
+Jatuh Cinta
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="artist"
+
+Artist Name
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Get All Songs
+GET http://localhost:5000/api/music
+
+### Download Lagu
+GET http://localhost:5000/api/music/download/1723393935840-jatuhcinta.mpeg
+
+### Delete Lagu
+DELETE http://localhost:5000/api/music/66badbb49bc05648d53c7829
+
+### Register Admin
+POST http://localhost:5000/api/admin/Adminregister
+Content-Type: application/json
+
+{
+  "username": "Rayzen7",
+  "password": "Tio_ganteng01",
+  "email": "rayzen7123@gmail.com"
+}
+
+### Login Admin
+POST http://localhost:5000/api/admin/Adminlogin
+Content-Type: application/json
+
+{
+  "email": "rayzen7123@gmail.com",
+  "password": "Tio_ganteng01"
+}
