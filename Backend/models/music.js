@@ -12,9 +12,12 @@ const musicSchema = new mongoose.Schema({
     fileUrl: {
         type: String,
         required: true,
-    }, 
-}, { timestamps: true
-});
+    },
+    filename: {  
+        type: String,
+        required: true,
+    }
+}, { timestamps: true });
 
 const Music = mongoose.model('Music', musicSchema);
-export default Music
+export default Music;
