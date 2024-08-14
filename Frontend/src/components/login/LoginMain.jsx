@@ -75,7 +75,7 @@ const LoginMain = () => {
                 <button type="submit" className="w-[100px] h-[40px] rounded-full bg-blue text-white font-semibold text-sm transition-transform transform hover:scale-95 active:bg-white active:text-blue">
                     Login
                 </button>
-                <div className={`message fixed top-[-16%] left-1/2 transform -translate-x-1/2 bg-white text-black text-center p-2 rounded-lg w-[350px] py-[10px] transition-opacity duration-500 font-poppins ${message ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`message fixed top-[-14%] left-1/2 transform -translate-x-1/2 bg-white text-black text-center p-2 rounded-lg w-[350px] py-[10px] transition-opacity duration-500 font-poppins ${message ? 'opacity-100' : 'opacity-0'}`}>
                     {message && <p>{message}</p>}
                 </div>
                 <p className="text-white mt-4">Bukan admin? <Link to='/'><span className="text-blue-400 underline">Masuk di sini</span></Link></p>
